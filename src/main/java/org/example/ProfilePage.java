@@ -5,12 +5,13 @@ import com.codeborne.selenide.SelenideElement;
 import static com.codeborne.selenide.Selenide.$x;
 
 public class ProfilePage {
-    private final SelenideElement sideMenu = $x("//*[@id=\"hook_Block_Navigation\"]/div/div/div[1]/a/div");
-    private final SelenideElement logoutBtn = $x("//*[@id=\"hook_Block_ToolbarUserDropdown\"]/div/div[2]/div/div[1]/div/div[1]/div[2]/a");
-    private final SelenideElement userMenu = $x("//*[@id=\"hook_Block_ToolbarUserDropdown\"]/div/div[1]");
+    private final SelenideElement loginNameField = $x("//a[@class='nav-side_i  __with-ic __with-new-icons']/div");
+    private final SelenideElement logoutBtn = $x("//div[@class='toolbar_accounts-user-delete-button']");
+    private final SelenideElement userMenu = $x("//div[@class='ucard-mini toolbar_ucard js-toolbar-menu']");
     private final SelenideElement openMyGroupsButton = $x("//a[@aria-label='Группы']");
-    private final SelenideElement openMyMusicButton = $x("//div[@class='toolbar_nav_a toolbar_nav_a__audio h-mod']/div[2]");
+    private final SelenideElement openMyMusicButton = $x("//div[@class='toolbar_nav_a toolbar_nav_a__audio h-mod']");
     private final SelenideElement openActionButton = $x("//span[@aria-label='События']");
+    private final SelenideElement openMyPhotosButton = $x("//a[@aria-label='Фото']");
 
     public ProfilePage() {
     }
@@ -30,8 +31,13 @@ public class ProfilePage {
         return new ActionsPage();
     }
 
+    public MyPhotosPage getMyPhotosPage(){
+        openMyPhotosButton.click();
+        return new MyPhotosPage();
+    }
+
     public String getUserName() {
-        return sideMenu.getText();
+        return loginNameField.getText();
     }
 
     public void expandUserMenu() {

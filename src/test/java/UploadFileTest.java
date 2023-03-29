@@ -1,6 +1,7 @@
 import com.codeborne.selenide.Selenide;
 import org.example.*;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -8,6 +9,7 @@ public class UploadFileTest {
     public static ActionsPage actionsPage;
     public static LoginPage loginPage;
     public static ProfilePage profilePage;
+    public static MyPhotosPage myPhotosPage;
 
     @BeforeAll
     public static void setup() {
@@ -16,13 +18,19 @@ public class UploadFileTest {
         loginPage.inputPasswd(ConfProperties.getProperty("password"));
         loginPage.clickLoginBtn();
         profilePage = new ProfilePage();
-        actionsPage = profilePage.getActionsPage();
     }
 
     @Test
     public void uploadFileTest() {
+        myPhotosPage = profilePage.getMyPhotosPage();
+        int photosNumberBefore = myPhotosPage.getPhotosCount();
+        Selenide.back();
+        actionsPage = profilePage.getActionsPage();
         actionsPage.uploadFile("src/main/resources/kitten.jpeg");
-        // TODO: 28.03.2023  ("check for the right photo upload")
+        actionsPage.closeWindowForUpload();
+        myPhotosPage = profilePage.getMyPhotosPage();
+        int photosNumberAfter = myPhotosPage.getPhotosCount();
+        Assertions.assertEquals(photosNumberBefore + 1, photosNumberAfter);
     }
 
     @AfterAll

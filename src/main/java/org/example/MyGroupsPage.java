@@ -2,7 +2,6 @@ package org.example;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-
 import java.util.List;
 import java.util.stream.Collectors;
 

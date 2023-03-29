@@ -1,7 +1,9 @@
 package org.example;
 
+import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
+
 import static com.codeborne.selenide.Selenide.$x;
 
 public class LoginPage {
@@ -10,6 +12,7 @@ public class LoginPage {
     private final SelenideElement submitButton = $x("//*[@class='login-form-actions']/input[@type='submit']");
 
     public LoginPage(String url) {
+        Configuration.browserSize = "1920x1080";
         Selenide.open(url);
     }
 

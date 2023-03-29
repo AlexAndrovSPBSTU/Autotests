@@ -33,7 +33,6 @@ public class JoinGroupTest {
         String joinedGroupName = myGroupsPage.getGroupName();
         Selenide.refresh();
         List<String> myJoinedGroupsName = myGroupsPage.getMyJoinedGroupsName();
-        System.out.println(myJoinedGroupsName.contains(joinedGroupName));
         assertThat(myJoinedGroupsName, hasItem(joinedGroupName));
     }
 
