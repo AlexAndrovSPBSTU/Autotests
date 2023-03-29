@@ -13,6 +13,7 @@ public class MyMusicPage {
     private final SelenideElement playlistNameField = $x("//input[@class='input' and @placeholder='Название сборника']");
     private final SelenideElement createPlaylist = $x("//wm-button[@data-tsid='create_playlist_button']");
     private final ElementsCollection createdPlaylists = $$x("//div[@class='submenu']/section/a/div");
+    private final SelenideElement closeMusicPageButton = $x("//div[@class='toolbar-layer_close js-close-layer']");
 
     public MyMusicPage() {
     }
@@ -46,5 +47,9 @@ public class MyMusicPage {
             throw new RuntimeException(e);
         }
         return createdPlaylists.texts();
+    }
+
+    public void close() {
+        closeMusicPageButton.click();
     }
 }

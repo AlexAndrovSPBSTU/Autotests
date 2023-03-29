@@ -2,6 +2,7 @@ package org.example;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,10 +24,15 @@ public class MyGroupsPage {
         joinGroupButton.click();
     }
 
-   public List<String> getMyJoinedGroupsName(){
+    public List<String> getMyJoinedGroupsName() {
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         return myJoinedGroups
                 .stream()
-                .map(e->e.getAttribute("alt"))
+                .map(e -> e.getAttribute("alt"))
                 .collect(Collectors.toList());
-   }
+    }
 }
