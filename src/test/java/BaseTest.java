@@ -2,6 +2,7 @@ import com.codeborne.selenide.Selenide;
 import org.example.*;
 import org.junit.jupiter.api.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class BaseTest {
         loginPage.clickLoginBtn();
         profilePage = new ProfilePage();
     }
+
 
     @AfterAll
     public static void tearDown() {
@@ -99,7 +101,37 @@ public class BaseTest {
 
         @AfterEach
         public void getBack() {
+            myMusicPage.removeCreatedPlaylists();
             myMusicPage.close();
+        }
+    }
+
+    @Nested
+    class CurrentDateTest {
+        public MyHolidaysPage myHolidaysPage;
+
+        @Test
+        public void checkCurrentDate() {
+            myHolidaysPage = profilePage.getMyHolidaysPage();
+            Assertions.assertEquals(myHolidaysPage.getCurrentDay(), LocalDate.now().getDayOfMonth());
+            Selenide.back();
+        }
+    }
+
+    @Nested
+    class AddVideoAsBookmarkTest {
+        public VideosPage videosPage;
+        public BookmarksPage bookmarksPage;
+        @Test
+        public void addVideoAsBookmark() {
+            videosPage = profilePage.getVideosPage();
+            videosPage.expandVideoMenu();
+            videosPage.addBookmarks();
+            String addedVideoTitle = videosPage.getVideoTitle();
+            bookmarksPage = profilePage.getBookmarksPage();
+            List<String> addedVideosTitle = bookmarksPage.getVideosTitle();
+            assertThat(addedVideosTitle,hasItem(addedVideoTitle));
+            Selenide.back();
         }
     }
 }
