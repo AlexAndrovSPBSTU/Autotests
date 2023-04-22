@@ -1,38 +1,43 @@
 package org.example;
 
-import com.codeborne.selenide.ElementsCollection;
-import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.*;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.codeborne.selenide.Selenide.*;
 
 public class MyGroupsPage {
-    private final SelenideElement groupName = $x("//a[@class='group-detailed-card_name'][1]");
-    private final SelenideElement joinGroupButton = $x("//a[@class='button-pro group-join_btn __small __sec'][1]");
-    private final ElementsCollection myJoinedGroups = $$x("//li[@class='scroll-slider_item mr-x']//img");
+    private final SelenideElement FIRST_GROUP_NAME_FIELD = $x("//a[@class='group-detailed-card_name']");
+    private final SelenideElement JOIN_GROUP_BUTTON = $x("//a[@class='button-pro group-join_btn __small __sec']");
+    private final ElementsCollection MY_JOINED_GROUPS_LIST = $$x("//li[@class='scroll-slider_item mr-x']");
+    private final SelenideElement GROUP_NAME_FIELD = $x("//h1[@class='group-name_h']");
 
     public MyGroupsPage() {
     }
 
-    public String getGroupName() {
-        return groupName.text();
+    public String getFirstGroupName() {
+        return FIRST_GROUP_NAME_FIELD
+                .shouldBe(Condition.visible.because("Группа не найдена"))
+                .text();
     }
 
     public void clickJoinGroupButton() {
-        joinGroupButton.click();
+        JOIN_GROUP_BUTTON
+                .shouldBe(Condition.visible.because("Кнопка присоединения к группе не найдена"))
+                .click();
     }
 
+
     public List<String> getMyJoinedGroupsName() {
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        List<String> list = new ArrayList<>();
+        int size = MY_JOINED_GROUPS_LIST.size();
+        for (int i = 0; i < size; i++) {
+            MY_JOINED_GROUPS_LIST.get(i).shouldBe(Condition.visible.because("Группа не найдена")).click();
+            list.add(GROUP_NAME_FIELD.shouldBe(Condition.visible.because("Поле названия группы не найдено")).text());
+            Selenide.back();
         }
-        return myJoinedGroups
-                .stream()
-                .map(e -> e.getAttribute("alt"))
-                .collect(Collectors.toList());
+        return list;
     }
+
 }
